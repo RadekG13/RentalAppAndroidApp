@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="9dp">
+
+
+
+    <Button
+        android:id="@+id/bt_search"
+        style="@style/Widget.AppCompat.Button.Colored"
+
+        android:layout_width="330dp"
+        android:layout_height="64dp"
+        android:text="Zaloguj się"
+        app:layout_constraintBottom_toTopOf="@+id/tV_Help"
+        app:layout_constraintStart_toStartOf="@+id/rg_1"
+        app:layout_constraintTop_toBottomOf="@+id/rg_1" />
+
+    <EditText
+        android:id="@+id/edt_types_of_repair"
+        android:layout_width="330dp"
+        android:layout_height="64dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_password_icon"
+        android:drawablePadding="12dp"
+        android:hint="Hasło"
+        android:inputType="textPassword"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/rg_1"
+        app:layout_constraintEnd_toEndOf="@+id/edt_user_name"
+        app:layout_constraintStart_toStartOf="@+id/edt_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/edt_user_name" />
+
+    <RadioGroup
+        android:id="@+id/rg_1"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bt_search"
+        app:layout_constraintEnd_toEndOf="@+id/edt_types_of_repair"
+        app:layout_constraintStart_toStartOf="@+id/edt_types_of_repair"
+        app:layout_constraintTop_toBottomOf="@+id/edt_types_of_repair">
+
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="5dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Zarządca"
+            android:textColor="@color/radio_flat_text_selector" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Najemca"
+            android:textColor="@color/radio_flat_text_selector" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:text="Utwórz konto"
+        android:textColor="@color/color6"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tV_Help"
+        app:layout_constraintStart_toEndOf="@+id/tV_Help"
+        app:layout_constraintTop_toTopOf="@+id/tV_Help" />
+
+    <EditText
+        android:id="@+id/edt_user_name"
+        android:layout_width="330dp"
+        android:layout_height="64dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
+        android:hint="Email"
+        android:inputType="textWebEmailAddress"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_types_of_repair"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+        <!--android:imeOptions="flagNoExtractUi" -->
+
+    <TextView
+        android:id="@+id/tV_Help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nowy użytkownik?"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bt_search"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toStartOf="@+id/bt_search"
+        app:layout_constraintTop_toBottomOf="@+id/bt_search" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

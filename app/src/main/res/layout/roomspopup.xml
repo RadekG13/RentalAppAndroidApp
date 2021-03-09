@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/eT_Fee"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="Opłata"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/eT_Desc2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eT_Bail" />
+
+    <Button
+        android:id="@+id/bt_Cancel2"
+
+        android:layout_width="165dp"
+        android:layout_height="45dp"
+        android:background="@android:color/white"
+        android:text="Anauluj"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bt_Add2"
+        app:layout_constraintStart_toStartOf="@+id/bt_Add2"
+        app:layout_constraintTop_toBottomOf="@+id/bt_Add2" />
+
+    <Button
+        android:id="@+id/bt_Add2"
+        style="@style/Widget.AppCompat.Button.Colored"
+
+        android:layout_width="330dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="41dp"
+        android:text="Dodaj"
+        app:layout_constraintBottom_toTopOf="@+id/bt_Cancel2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eT_Desc2" />
+
+    <EditText
+        android:id="@+id/eT_Desc2"
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        android:background="@drawable/custom_input"
+        android:gravity="clip_horizontal"
+        android:hint="Opis"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_Add2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eT_Fee" />
+
+    <ImageView
+        android:id="@+id/iV_Room"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+
+        android:src="@drawable/ic_room"
+        app:layout_constraintBottom_toTopOf="@+id/eT_Title1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/eT_Title1"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/custom_input"
+        android:hint="Nazwa"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/eT_Bail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iV_Room" />
+
+    <EditText
+        android:id="@+id/eT_Bail"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="Kaucja"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/eT_Fee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eT_Title1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="9dp">
+
+
+
+    <EditText
+        android:id="@+id/edt_telephone"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_input"
+
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:hint="Telefon"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@+id/edt_bank_account"
+        app:layout_constraintEnd_toEndOf="@+id/edt_user_name"
+        app:layout_constraintStart_toStartOf="@+id/edt_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/edt_name_and_surname" />
+
+    <EditText
+        android:id="@+id/edt_bank_account"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_input"
+
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:hint="Numer konta bankowego"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/LandlordTenant"
+        app:layout_constraintEnd_toEndOf="@+id/edt_telephone"
+        app:layout_constraintStart_toStartOf="@+id/edt_telephone"
+        app:layout_constraintTop_toBottomOf="@+id/edt_telephone" />
+
+    <EditText
+        android:id="@+id/edt_name_and_surname"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_input"
+
+        android:hint="Imię i nazwisko"
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_telephone"
+        app:layout_constraintEnd_toEndOf="@+id/edt_user_name"
+        app:layout_constraintStart_toStartOf="@+id/edt_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/edt_types_of_repair" />
+
+
+    <EditText
+        android:id="@+id/edt_user_name"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_input"
+
+        android:hint="Email"
+        android:inputType="textWebEmailAddress|textEmailAddress"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_types_of_repair"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edt_types_of_repair"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_input"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+
+        android:hint="Hasło"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/edt_name_and_surname"
+        app:layout_constraintEnd_toEndOf="@+id/edt_user_name"
+        app:layout_constraintStart_toStartOf="@+id/edt_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/edt_user_name" />
+
+    <Button
+        android:id="@+id/bt_search"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="ZAREJESTRUJ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/LandlordTenant"
+        app:layout_constraintStart_toStartOf="@+id/LandlordTenant"
+        app:layout_constraintTop_toBottomOf="@+id/LandlordTenant" />
+
+    <RadioGroup
+        android:id="@+id/LandlordTenant"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bt_search"
+        app:layout_constraintEnd_toEndOf="@+id/edt_bank_account"
+        app:layout_constraintStart_toStartOf="@+id/edt_bank_account"
+        app:layout_constraintTop_toBottomOf="@+id/edt_bank_account">
+
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="5dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Zarządca"
+            android:textColor="@color/radio_flat_text_selector" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Najemca"
+            android:textColor="@color/radio_flat_text_selector" />
+
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

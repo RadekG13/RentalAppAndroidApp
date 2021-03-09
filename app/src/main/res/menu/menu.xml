@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:id="@+id/notification1"
+    android:title="notification1"
+    android:icon="@drawable/ic_notification1"
+    app:actionLayout="@layout/feed_update_count"
+    app:showAsAction="always"/>
+
+
+    </menu>

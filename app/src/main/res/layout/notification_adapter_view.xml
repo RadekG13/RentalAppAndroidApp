@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearAdapter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="70"
+        android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_title3"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:paddingLeft="3dp"
+        android:text="Nazwa"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+      />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:paddingLeft="3dp"
+            android:text="Data"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+         />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_Desc3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="fill"
+        android:layout_weight="30"
+        android:paddingLeft="3dp"
+        android:text="Opis"
+        tools:layout_editor_absoluteX="181dp"
+        tools:layout_editor_absoluteY="46dp" />
+</LinearLayout>
