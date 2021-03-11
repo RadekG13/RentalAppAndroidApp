@@ -375,6 +375,13 @@ public class ApartmentsActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<ResponseApartmentViewModel>>() {
             @Override
             public void onResponse(Call<List<ResponseApartmentViewModel>> call, Response<List<ResponseApartmentViewModel>> response) {
+
+                Log.d("MyApp", "Code : "+response.code());
+                if (response.code() == 401){
+                  logout();
+
+                }
+                else{
                 if (response.isSuccessful()) {
 
                     List<ResponseApartmentViewModel>  list = response.body();
@@ -445,7 +452,7 @@ pomoc =apartments.getTitle();
                         e.printStackTrace();
                     }
 
-                }
+                }}
             }
 
             @Override
@@ -460,9 +467,12 @@ pomoc =apartments.getTitle();
 
     }
 
+    private void logout() {
 
-
-
+        Toast.makeText(ApartmentsActivity.this, "Zaloguj się ponownie!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ApartmentsActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
 
 
 }

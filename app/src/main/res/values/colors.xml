@@ -6,4 +6,8 @@
     <color name="color4">#023047</color>
     <color name="color5">#FFB703</color>
     <color name="color6">#FB8500</color>
+
+    <color name="colorTestPrimary">#6c757d</color>
+    <color name="colorTestSecondary">#ffffff</color>
+
 </resources>

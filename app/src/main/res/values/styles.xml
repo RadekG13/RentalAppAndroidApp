@@ -7,4 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme2.Button" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/colorTestSecondary</item>
+    </style>
+
+
 </resources>

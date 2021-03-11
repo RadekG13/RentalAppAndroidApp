@@ -64,6 +64,11 @@ public class MenuActivity extends AppCompatActivity {
                        getSecret();
                     }
 
+                    if(finalI==5){
+                        Intent intent = new Intent(MenuActivity.this,SettingsActivity.class);
+                        startActivity(intent);
+                    }
+
                 }
             });
         }

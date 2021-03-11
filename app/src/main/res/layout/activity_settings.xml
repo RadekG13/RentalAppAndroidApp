@@ -4,6 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTestPrimary"
     tools:context=".SettingsActivity">
+
+
+    <Button
+        android:id="@+id/btn_delete_user"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Usuń konto"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
+        app:layout_constraintEnd_toEndOf="@+id/btn_edit_user"
+        app:layout_constraintStart_toStartOf="@+id/btn_edit_user"
+        app:layout_constraintTop_toBottomOf="@+id/btn_edit_user" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="wyloguj się"
+        android:theme="@style/AppTheme2.Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_delete_user"
+        app:layout_constraintStart_toStartOf="@+id/btn_delete_user"
+        app:layout_constraintTop_toBottomOf="@+id/btn_delete_user" />
+
+    <Button
+        android:id="@+id/btn_edit_user"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Edytuj dane"
+        android:theme="@style/AppTheme2.Button"
+        app:layout_constraintBottom_toTopOf="@+id/btn_delete_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
