@@ -74,7 +74,9 @@ public class ApartmentsAdapter extends RecyclerView.Adapter<ApartmentsAdapter.Vi
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), ApartamentdetailActivity.class);
                     ResponseApartmentViewModel Apartment = data.get(getAdapterPosition());
-                    i.putExtra("title", Apartment.getTitle()); //data.get(getAdapterPosition())
+                    i.putExtra("Title", Apartment.getTitle()); //data.get(getAdapterPosition())
+                    i.putExtra("Desc", Apartment.getDescription());
+                    //i.putExtra("Photo", Apartment.getPhoto());
                     i.putExtra("Id", Apartment.getApartmentId());
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     v.getContext().startActivity(i);

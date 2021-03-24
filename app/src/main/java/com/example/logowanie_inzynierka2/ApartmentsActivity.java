@@ -188,7 +188,9 @@ public class ApartmentsActivity extends AppCompatActivity {
 
                     AddApartment(f);
 
-                    Toast.makeText(ApartmentsActivity.this, "Dodano!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(ApartmentsActivity.this, "Wysłano!", Toast.LENGTH_SHORT).show();
+                    //recreate();
+                    dialogAdd.dismiss();
                 }
                 else{
 
@@ -204,29 +206,15 @@ public class ApartmentsActivity extends AppCompatActivity {
     }
 
     private void AddApartment( File file){
+
+
         ApartmentViewModel apartment = new ApartmentViewModel(newApartment_Address.getText().toString(), newApartment_Desc.getText().toString());
-
-
 
         RequestBody apartmentFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), apartmentFile);
 
-
-
-
-
         SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
         String retrievedToken  = preferences.getString("TOKEN",null);//second parameter default value.
-
-
-
-
-
-
-
-
-
-
 
         Call<ResponseViewModel> call =iMyAPI.AddApartment(retrievedToken,filePart,apartment);
 
@@ -236,6 +224,7 @@ public class ApartmentsActivity extends AppCompatActivity {
                 if (response.isSuccessful())
                 {
                     Toast.makeText(ApartmentsActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    getApartments(recyclerView, getApplicationContext(), progressBar);
                 }
                 else
                 {
@@ -245,7 +234,6 @@ public class ApartmentsActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 

@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void deleteUser() {
 
-    
+
     }
 
     private void logout() {
