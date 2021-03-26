@@ -23,6 +23,7 @@ import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.example.logowanie_inzynierka2.Extensions.ImageResizer;
 import com.example.logowanie_inzynierka2.Model.ApartmentViewModel;
 import com.example.logowanie_inzynierka2.Model.ResponseApartmentViewModel;
 import com.example.logowanie_inzynierka2.Model.ResponseViewModel;
+import com.example.logowanie_inzynierka2.Model.RoomViewModel;
 import com.example.logowanie_inzynierka2.Remote.IMyAPI;
 import com.example.logowanie_inzynierka2.Remote.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,12 +52,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ApartamentdetailActivity extends AppCompatActivity {
+public class ApartamentdetailActivity extends AppCompatActivity implements RoomsAdapter.AdapterCallback {
     TextView ApartmentAddress;
     RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter1;
     ArrayList<String> items_Title;
     FloatingActionButton buttonAdd2;
+    private ProgressBar progressBar;
     //-----------------------------------------------------------------------------------------
     private AlertDialog.Builder dialogAddBuilder;
     private AlertDialog dialogAdd;
@@ -65,7 +68,7 @@ public class ApartamentdetailActivity extends AppCompatActivity {
     IMyAPI iMyAPI = RetrofitClient.getInstance().create(IMyAPI.class);
 
     File  f= new File("bad_path");
-    private ImageView image;
+    private ImageView image, image1;
 
 
     @Override
@@ -77,36 +80,31 @@ public class ApartamentdetailActivity extends AppCompatActivity {
 
         Intent i =getIntent();
         String title=i.getStringExtra("Title");
-
+        String apartmentId = i.getStringExtra("Id");
         ApartmentAddress.setText(title);
 
         ///back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        ///
         recyclerView= findViewById(R.id.rV_rooms);
-
-
-        /////////
-        items_Title = new ArrayList<>();
-        items_Title.add("Pokój 1");
-        items_Title.add("Pokój 2");
-        items_Title.add("Pokój 3");
-        items_Title.add("Pokój 4");
-        /////////
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RoomsAdapter(this, items_Title);
-        recyclerView.setAdapter(adapter);
-
-
-
-
         buttonAdd2 = (FloatingActionButton) findViewById(R.id.fAB_Add);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        ///
+
+        recyclerView.setVisibility(View.GONE);
+
+
+        getRooms(recyclerView, this, progressBar, apartmentId);
+
+
+
+
+
         buttonAdd2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewRoomDialog();
+                createNewRoomDialog(null);
 
             }
         });
@@ -116,9 +114,77 @@ public class ApartamentdetailActivity extends AppCompatActivity {
 
     }
 
+    private void getRooms(RecyclerView recyclerView1, Context context1, ProgressBar progressBar1, String apartmentId) {
+
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        String retrievedToken = preferences.getString("TOKEN", null);
+
+        Call<List<RoomViewModel>> call = iMyAPI.GetRooms(retrievedToken, apartmentId);
+
+        call.enqueue(new Callback<List<RoomViewModel>>() {
+            @Override
+            public void onResponse(Call<List<RoomViewModel>> call, Response<List<RoomViewModel>> response) {
+
+                Log.d("MyApp", "Code : "+response.code());
+                if (response.code() == 401){
+                    logout();
+                }
+                else {
+                    if(response.isSuccessful()){
+                        List<RoomViewModel> list = response.body();
+
+                        if(list!=null){
+                            recyclerView1.setLayoutManager(new LinearLayoutManager(context1));
+                            adapter1 = new RoomsAdapter(context1, list);
+                            recyclerView1.setAdapter(adapter1);
+                            Toast.makeText(ApartamentdetailActivity.this, String.valueOf(list.get(0).getRentFee()), Toast.LENGTH_SHORT).show();
+                            recyclerView1.setVisibility(View.VISIBLE);
+                            progressBar1.setVisibility(View.GONE);
+                            adapter1.notifyDataSetChanged();
+
+                        }
+                        else{
+                            recyclerView1.setVisibility(View.VISIBLE);
+                            progressBar1.setVisibility(View.GONE);
+                            adapter1.notifyDataSetChanged();
+                            Toast.makeText(ApartamentdetailActivity.this, "Brak mieszkan!", Toast.LENGTH_SHORT).show();
+                        }
 
 
-    public void createNewRoomDialog(){
+
+
+                    }
+                    else {
+                        try {
+                            String body = response.errorBody().string(); //Raw json
+                            Toast.makeText(ApartamentdetailActivity.this, body, Toast.LENGTH_LONG).show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<RoomViewModel>> call, Throwable t) {
+                Toast.makeText(ApartamentdetailActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+
+
+    public void createNewRoomDialog(RoomViewModel  retrievedRoom){
+
         dialogAddBuilder = new AlertDialog.Builder(ApartamentdetailActivity.this);
         final View ApartmentPopupView=getLayoutInflater().inflate(R.layout.roomspopup, null);
         newRoom_Title = (EditText) ApartmentPopupView.findViewById(R.id.eT_Title1);
@@ -127,15 +193,66 @@ public class ApartamentdetailActivity extends AppCompatActivity {
         newRoom_Fee = (EditText) ApartmentPopupView.findViewById(R.id.eT_Fee);
         saveButton=(Button) ApartmentPopupView.findViewById(R.id.bt_Add2);
         cancelButton=(Button) ApartmentPopupView.findViewById(R.id.bt_Cancel2);
+        image = (ImageView) ApartmentPopupView.findViewById(R.id.iV_Room);
 
         dialogAddBuilder.setView(ApartmentPopupView);
         dialogAdd = dialogAddBuilder.create();
         dialogAdd.show();
 
+        //---------------------------SET DATA - DOWNLOADED FROM SERVER
+        Boolean EditorAdd=false;
+        String RoomId=null;
+        if(retrievedRoom!=null){
+            EditorAdd=true;
+            String Title = retrievedRoom.getTitle();
+            String Desc = retrievedRoom.getDescription();
+            String Photo = retrievedRoom.getPhoto();
+            String Bail = String.valueOf(retrievedRoom.getDeposit());
+            String Fee = String.valueOf(retrievedRoom.getRentFee());
+            Log.d("MyApp", Photo);
+            newRoom_Title.setText(Title);
+            newRoom_Desc.setText(Desc);
+            newRoom_Bail.setText(Bail);
+            newRoom_Fee.setText(Fee);
+            Bitmap photo1 = StringToBitMap(Photo);
+            image.setImageBitmap(photo1);
+            RoomId = retrievedRoom.getRoomId();
+        }
+
+    //--------------------------------------------CHANGE DATA
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage(ApartamentdetailActivity.this);
+            }
+        });
+
+        String finalRoomId = RoomId;
+        Boolean finalEditorAdd = EditorAdd;
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ApartamentdetailActivity.this, "Dodano!", Toast.LENGTH_SHORT).show();
+
+
+                RoomViewModel room = new RoomViewModel(null, newRoom_Title.getText().toString(),newRoom_Desc.getText().toString(),Integer.parseInt(newRoom_Bail.getText().toString()),Integer.parseInt(newRoom_Fee.getText().toString()),false,null,null);
+
+                if(f.length()!=0){
+
+
+                    //Create or Edit
+
+                        CallEditOrCreate(room, f, finalRoomId);
+
+
+
+
+
+                }
+                else{
+
+                    Toast.makeText(ApartamentdetailActivity.this, "Brak pliku!", Toast.LENGTH_SHORT).show();}
+
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +266,7 @@ public class ApartamentdetailActivity extends AppCompatActivity {
 
 
 
+    //-----------------------------------APARTMENTS
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_apartament,menu);
@@ -350,7 +468,6 @@ public class ApartamentdetailActivity extends AppCompatActivity {
     }
 
 
-
     //-----------------------------------DUPLICATED CODE - TO FIX
 
     private void logout() {
@@ -465,10 +582,6 @@ public class ApartamentdetailActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     private Bitmap StringToBitMap(String encodedString) {
         try{
             byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
@@ -514,4 +627,186 @@ public class ApartamentdetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    //--------------------------------ROOMS
+    public void EditRoom(String roomId){
+        //pobrać apartmentid
+        Intent i =getIntent();
+        String apartmentId = i.getStringExtra("Id");
+
+        //pobrać z backendu jeden pokój
+        getRoom(apartmentId, roomId);
+        //włączyć dialog zmiany pokoju
+
+
+
+
+
+    }
+
+    public void RemoveRoom(String roomId){
+
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        String retrievedToken  = preferences.getString("TOKEN",null);//second parameter default value.
+
+
+        //pobrać apartmentid
+        Intent i =getIntent();
+        String apartmentId = i.getStringExtra("Id");
+
+        Call<ResponseViewModel> call =iMyAPI.DeleteRoom(retrievedToken,apartmentId,roomId);
+
+        call.enqueue(new Callback<ResponseViewModel>() {
+            @Override
+            public void onResponse(Call<ResponseViewModel> call, Response<ResponseViewModel> response) {
+                if (response.isSuccessful())
+                {
+                    Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    try {
+                        String body = response.errorBody().string(); //Raw json
+                        Toast.makeText(ApartamentdetailActivity.this,body, Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseViewModel> call, Throwable t) {
+                Toast.makeText(ApartamentdetailActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+
+    private void getRoom(String apartmentId, String roomId){
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        String retrievedToken  = preferences.getString("TOKEN",null);//second parameter default value.
+
+
+        Call<RoomViewModel>  call = iMyAPI.GetOneRoom(retrievedToken,apartmentId,roomId);
+
+        call.enqueue(new Callback<RoomViewModel>() {
+            @Override
+            public void onResponse(Call<RoomViewModel> call, Response<RoomViewModel> response) {
+
+                Log.d("MyApp", "Code : "+response.code());
+                if (response.code() == 401){
+                    logout();
+
+                }
+                else{
+                    if (response.isSuccessful()) {
+                        RoomViewModel  retrievedRoom=response.body();
+
+                        //Toast.makeText(ApartamentdetailActivity.this, retrievedApartment.getTitle(), Toast.LENGTH_SHORT).show();
+
+                        createNewRoomDialog(retrievedRoom);
+
+                    }
+                    else{
+                        Toast.makeText(ApartamentdetailActivity.this, "Blad!", Toast.LENGTH_SHORT).show();}
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<RoomViewModel> call, Throwable t) {
+                Toast.makeText(ApartamentdetailActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+    }
+
+
+    private void CallEditOrCreate(RoomViewModel room,File file, String roomId) {
+
+        RequestBody roomFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), roomFile);
+
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        String retrievedToken  = preferences.getString("TOKEN",null);//second parameter default value.
+
+        Intent i =getIntent();
+        String apartmentID=i.getStringExtra("Id");
+
+        if(roomId!=null){
+            Call<ResponseViewModel> call = iMyAPI.EditRoom(retrievedToken,filePart,room, apartmentID, roomId);
+
+            call.enqueue(new Callback<ResponseViewModel>() {
+                @Override
+                public void onResponse(Call<ResponseViewModel> call, Response<ResponseViewModel> response) {
+                    if (response.isSuccessful()){
+                        Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                        dialogAdd.dismiss();
+                        // Intent intent = new Intent(getApplicationContext(), ApartmentsActivity.class);
+                        //startActivity(intent);
+
+                    }
+                    else
+                    {
+                        try {
+                            String body = response.errorBody().string(); //Raw json
+                            Toast.makeText(ApartamentdetailActivity.this,body, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseViewModel> call, Throwable t) {
+                    Toast.makeText(ApartamentdetailActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+        else{
+            Call<ResponseViewModel> call = iMyAPI.AddRoom(retrievedToken, filePart, room, apartmentID);
+
+            call.enqueue(new Callback<ResponseViewModel>() {
+                @Override
+                public void onResponse(Call<ResponseViewModel> call, Response<ResponseViewModel> response) {
+                    if (response.isSuccessful()){
+                        Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                        dialogAdd.dismiss();
+                        // Intent intent = new Intent(getApplicationContext(), ApartmentsActivity.class);
+                        //startActivity(intent);
+
+                    }
+                    else
+                    {
+                        try {
+                            String body = response.errorBody().string(); //Raw json
+                            Toast.makeText(ApartamentdetailActivity.this,body, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseViewModel> call, Throwable t) {
+                    Toast.makeText(ApartamentdetailActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+    }
+
+
 }

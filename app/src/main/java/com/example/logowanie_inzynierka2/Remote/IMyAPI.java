@@ -5,6 +5,7 @@ import com.example.logowanie_inzynierka2.Model.LoginViewModel;
 import com.example.logowanie_inzynierka2.Model.RegisterViewModel;
 import com.example.logowanie_inzynierka2.Model.ResponseApartmentViewModel;
 import com.example.logowanie_inzynierka2.Model.ResponseViewModel;
+import com.example.logowanie_inzynierka2.Model.RoomViewModel;
 import com.example.logowanie_inzynierka2.Model.tblUser;
 
 import java.util.ArrayList;
@@ -57,4 +58,23 @@ public interface IMyAPI {
 
     @GET("api/Apartments/{id}")
     Call<ResponseApartmentViewModel> GetOneApartment(@Header("Authorization") String authToken, @Path("id") String id );
+
+    //Rooms
+    @Multipart
+    @POST("api/Apartments/{id}/rooms")
+    Call<ResponseViewModel> AddRoom(@Header("Authorization") String authToken, @Part MultipartBody.Part file, @Part("Rooms") RoomViewModel roomViewModel, @Path("id") String id);
+
+    @GET("api/Apartments/{id}/rooms/{roomId}")
+    Call<RoomViewModel> GetOneRoom(@Header("Authorization") String authToken,  @Path("id") String id, @Path("roomId") String roomId);
+
+    @GET("api/Apartments/{id}/rooms")
+    Call<List<RoomViewModel>> GetRooms(@Header("Authorization") String authToken, @Path("id") String id);
+
+    @Multipart
+    @PUT("api/Apartments/{id}/rooms/{roomId}")
+    Call<ResponseViewModel> EditRoom(@Header("Authorization") String authToken, @Part MultipartBody.Part file, @Part("Rooms") RoomViewModel roomViewModel, @Path("id") String id,@Path("roomId") String roomId);
+
+    @DELETE("api/Apartments/{id}/rooms/{roomId}")
+    Call<ResponseViewModel> DeleteRoom(@Header("Authorization") String authToken, @Path("id") String id, @Path("roomId") String roomId);
+
 }

@@ -67,7 +67,6 @@ public class ApartmentsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-    ArrayList<String> items;
     FloatingActionButton buttonAdd;
 
     File selectedFile, f= new File("bad_path"); // avoid null exception
@@ -84,36 +83,12 @@ public class ApartmentsActivity extends AppCompatActivity {
 
 
 
-    /*GsonBuilder builder = new GsonBuilder().registerTypeAdapter(byte[].class, new JsonSerializer<byte[]>() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(Base64.getEncoder().encodeToString(src));
-        }
-    });
-    Gson gson = builder.create(); */
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartments);
 
-
-
-
-
-      /*  items = new ArrayList<>();
-        items.add("Zdrowa 11");
-        items.add("Grabiszyńska 33");
-        items.add("Stalowa 180");
-        items.add("Plac Grunwaldzki 3");
-        items.add("Jedności Narodowej 150");
-        items.add("Tęczowa 26 ");
-        items.add("Paderewskiego 150 ");
-        items.add("Pszowska 22 Wodzisław Sl");*/
-        ////
+        ///
         recyclerView= (RecyclerView) findViewById(R.id.recycleView_Apartaments);
         buttonAdd = (FloatingActionButton) findViewById(R.id.floatingActionButton4);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

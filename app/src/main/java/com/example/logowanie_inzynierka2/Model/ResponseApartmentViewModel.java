@@ -11,8 +11,6 @@ public class ResponseApartmentViewModel {
 
     public String AppUserID;
 
-
-
     public String Photo;////???????
 
     public ResponseApartmentViewModel(String apartmentId, String title, String description, String appUserID, String photo) {
