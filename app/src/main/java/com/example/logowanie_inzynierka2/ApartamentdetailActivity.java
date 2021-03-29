@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -137,7 +138,7 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                             recyclerView1.setLayoutManager(new LinearLayoutManager(context1));
                             adapter1 = new RoomsAdapter(context1, list);
                             recyclerView1.setAdapter(adapter1);
-                            Toast.makeText(ApartamentdetailActivity.this, String.valueOf(list.get(0).getRentFee()), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(ApartamentdetailActivity.this, String.valueOf(list.get(0).getRentFee()), Toast.LENGTH_SHORT).show();
                             recyclerView1.setVisibility(View.VISIBLE);
                             progressBar1.setVisibility(View.GONE);
                             adapter1.notifyDataSetChanged();
@@ -394,8 +395,19 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                     Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                     dialogAdd.dismiss();
-                   // Intent intent = new Intent(getApplicationContext(), ApartmentsActivity.class);
-                    //startActivity(intent);
+
+
+                    (new Handler())
+                            .postDelayed(
+                                    new Runnable() {
+                                        public void run() {
+                                            Intent intent = new Intent(ApartamentdetailActivity.this,ApartmentsActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }, 1000);
+
+
+
 
                 }
                 else
@@ -608,6 +620,15 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                 if (response.isSuccessful())
                 {
                     Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    (new Handler())
+                            .postDelayed(
+                                    new Runnable() {
+                                        public void run() {
+                                            Intent intent = new Intent(ApartamentdetailActivity.this,ApartmentsActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }, 1000);
+
                 }
                 else
                 {
@@ -662,6 +683,9 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                 if (response.isSuccessful())
                 {
                     Toast.makeText(ApartamentdetailActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent i =getIntent();
+                    String apartmentId = i.getStringExtra("Id");
+                    getRooms(recyclerView, ApartamentdetailActivity.this, progressBar,apartmentId);
                 }
                 else
                 {
@@ -754,6 +778,18 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                         // Intent intent = new Intent(getApplicationContext(), ApartmentsActivity.class);
                         //startActivity(intent);
 
+                        /*(new Handler())
+                                .postDelayed(
+                                        new Runnable() {
+                                            public void run() {
+
+                                            }
+                                        }, 500);*/
+
+                        Intent i =getIntent();
+                        String apartmentId = i.getStringExtra("Id");
+                        getRooms(recyclerView, ApartamentdetailActivity.this, progressBar,apartmentId);
+
                     }
                     else
                     {
@@ -785,6 +821,10 @@ public class ApartamentdetailActivity extends AppCompatActivity implements Rooms
                         dialogAdd.dismiss();
                         // Intent intent = new Intent(getApplicationContext(), ApartmentsActivity.class);
                         //startActivity(intent);
+                        Intent i =getIntent();
+                        String apartmentId = i.getStringExtra("Id");
+                        getRooms(recyclerView, ApartamentdetailActivity.this, progressBar,apartmentId);
+
 
                     }
                     else
